@@ -1,0 +1,14 @@
+{
+  "pages": ["pages/home/index", "pages/today/index", "pages/research/index", "pages/fitness/index", "pages/more/index", "pages/memos/index", "pages/media/index", "pages/records/index", "pages/settings/index"],
+  "tabBar": { "color": "#64748b", "selectedColor": "#0f766e", "backgroundColor": "#ffffff", "list": [
+    { "pagePath": "pages/home/index", "text": "首页" }, { "pagePath": "pages/today/index", "text": "今日" }, { "pagePath": "pages/research/index", "text": "科研" }, { "pagePath": "pages/fitness/index", "text": "健身" }, { "pagePath": "pages/more/index", "text": "更多" }
+  ] },
+  "window": {
+    "navigationBarTitleText": "个人中心 · 备忘",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f3f6f8"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

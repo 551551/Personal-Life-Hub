@@ -1,0 +1,9 @@
+<view class="page">
+  <view class="heading">个人工作生活中心</view><view class="subtitle">工作有条理，生活有记录。</view>
+  <view class="error" wx:if="{{error}}">{{error}}</view>
+  <navigator url="/pages/today/index" open-type="switchTab" class="panel"><view class="label">{{date}} · 今日计划</view><view>还有 {{pending}} 项待完成 · 共 {{total}} 项 →</view></navigator>
+  <navigator class="panel" url="/pages/memos/index">快速备忘 · 随手记下想法 →</navigator>
+  <view class="panel"><view class="label">数据概览</view><view>{{stats}}</view></view>
+  <view class="module-grid"><navigator wx:for="{{modules}}" wx:key="title" class="panel" url="{{item.route}}" open-type="{{item.tab ? 'switchTab' : 'navigate'}}">{{item.title}} →</navigator></view>
+  <view class="footnote">数据只保存在当前设备，不会自动同步。清理小程序数据可能导致记录丢失，请定期导出备份。</view>
+</view>

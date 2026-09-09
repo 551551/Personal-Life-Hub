@@ -1,0 +1,33 @@
+import { expect, test } from '@playwright/test'
+
+test('custom leisure and guitar practice stay distinct and join today', async ({ page }) => {
+  await page.goto('/#/leisure')
+  await page.getByLabel('娱乐内容名称').fill('音乐纪录片')
+  await page.getByLabel('娱乐类别').fill('纪录片')
+  await page.getByLabel('娱乐计划日期').fill('2026-09-03')
+  await page.getByRole('button', { name: '加入清单' }).click()
+  await expect(page.getByLabel('编辑娱乐名称：音乐纪录片')).toHaveValue('音乐纪录片')
+  await page.getByLabel('编辑娱乐类别：音乐纪录片').fill('音乐电影')
+  await page.getByLabel('编辑娱乐类别：音乐纪录片').blur()
+
+  await page.getByRole('button', { name: '吉他专区' }).click()
+  await page.getByLabel('吉他曲目名称').fill('Blackbird')
+  await page.getByRole('button', { name: '添加曲目' }).click()
+  await page.getByLabel('编辑曲目备注：Blackbird').fill('先练主歌')
+  await page.getByLabel('编辑曲目备注：Blackbird').blur()
+  await page.getByLabel('吉他练习名称').fill('分解和弦练习')
+  await page.getByLabel('吉他练习日期').fill('2026-09-03')
+  await page.getByLabel('吉他练习重点').fill('右手稳定性')
+  await page.getByRole('button', { name: '安排练习' }).click()
+  await expect(page.getByText('分解和弦练习')).toBeVisible()
+  await page.getByLabel('编辑吉他练习时长：分解和弦练习').fill('45')
+  await page.getByLabel('编辑吉他练习时长：分解和弦练习').blur()
+  await expect(page.getByText(/45 分钟/)).toBeVisible()
+
+  await page.getByRole('link', { name: '今日计划' }).click()
+  await expect(page).toHaveURL(/#\/today$/)
+  await page.getByLabel('选择日期').fill('2026-09-03')
+  await expect(page).toHaveURL(/#\/today\/2026-09-03$/)
+  await expect(page.getByText('娱乐：音乐纪录片')).toBeVisible()
+  await expect(page.getByText('吉他：分解和弦练习')).toBeVisible()
+})

@@ -1,0 +1,8 @@
+<view class="page">
+  <view class="heading">数据与设置</view><view class="subtitle">本地记录，共 {{total}} 条（含设置）</view>
+  <view class="panel"><view class="label">备份与恢复</view><view>备份包含全部模块，可与原网页、电脑和 Android 版手动迁移。不会自动同步。</view><view class="muted">手机上从微信聊天选择 JSON 备份。恢复会整体替换当前数据，请先导出。</view></view>
+  <button class="primary" bindtap="onExport" disabled="{{busy}}" loading="{{busy}}">导出全部数据到微信</button><button bindtap="onImport" disabled="{{busy}}">从微信会话选择备份恢复</button>
+  <view class="error" wx:if="{{error}}">{{error}}</view><view class="notice" wx:if="{{notice}}">{{notice}}</view>
+  <view class="panel"><view class="label">隐私与数据说明</view><view>无需登录，不读取手机号、位置、通讯录，不接入广告或统计服务。你填写的备忘、工作、训练、饮食和娱乐记录保存在当前设备，不上传到我们的服务器。</view><view>只有你主动导出并选择发送时，备份才通过微信发给你选定的会话，请注意其中的私人内容。</view><view>清理微信或小程序数据、卸载微信、更换设备都可能导致数据丢失。本地存储不是永久备份。</view></view>
+  <button class="danger" bindtap="onClear" disabled="{{busy}}">清空全部本地业务数据</button>
+</view>

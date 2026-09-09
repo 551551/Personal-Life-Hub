@@ -1,0 +1,11 @@
+<view class="page">
+  <view class="heading">今日计划</view><picker mode="date" value="{{date}}" bindchange="onDate" disabled="{{busy}}"><view class="date-choice">{{date}} · 点击切换日期</view></picker>
+  <navigator class="panel" url="/pages/records/index?type=temporaryTasks">添加临时任务 →</navigator>
+  <view class="muted">待完成 {{pending}} / 共 {{total}} · 来自各模块的计划自动汇总</view><view class="error" wx:if="{{error}}">{{error}}</view>
+  <view class="panel" wx:if="{{!total}}">这一天没有计划。可添加临时任务，或在各模块设置计划日期。</view>
+  <view class="panel" wx:for="{{plans}}" wx:key="key">
+    <navigator url="{{item.route}}" open-type="{{item.tab ? 'switchTab' : 'navigate'}}"><view class="label">{{item.title}}</view><view class="muted">{{item.time || '时间未指定'}} · {{item.priority === 'high' ? '高优先级' : item.priority === 'low' ? '低优先级' : '中优先级'}} · {{item.status === 'completed' ? '已完成' : '待完成'}}</view></navigator>
+    <view class="actions"><button bindtap="onToggle" data-source="{{item.sourceType}}" data-id="{{item.sourceId}}" data-status="{{item.status}}" disabled="{{busy}}">{{item.status === 'completed' ? '恢复待办' : '标记完成'}}</button><picker mode="date" value="{{date}}" bindchange="onReschedule" data-source="{{item.sourceType}}" data-id="{{item.sourceId}}" disabled="{{busy}}"><button disabled="{{busy}}">改期</button></picker></view>
+  </view>
+  <button wx:if="{{total > plans.length}}" bindtap="onMore" disabled="{{busy}}">加载更多</button>
+</view>

@@ -1,0 +1,2 @@
+.module-grid { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.module-grid navigator { width: calc(50% - 8rpx); box-sizing: border-box; }

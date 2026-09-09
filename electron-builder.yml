@@ -1,0 +1,27 @@
+appId: local.personal-life-hub.desktop
+productName: 个人工作生活中心
+directories:
+  output: release
+files:
+  - dist/**/*
+  - desktop/main.cjs
+  - desktop/assets.cjs
+  - desktop/icon.ico
+  - package.json
+asar: true
+npmRebuild: false
+win:
+  executableName: PersonalLifeHub
+  icon: desktop/icon.ico
+  target:
+    - target: nsis
+      arch: [x64]
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: 个人工作生活中心
+  deleteAppDataOnUninstall: false
+  artifactName: PersonalLifeHub-Setup-${version}.${ext}

@@ -1,0 +1,8 @@
+{
+  "appid": "wx3e05a9b25530c50a",
+  "projectname": "personal-life-hub-wechat",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "./",
+  "setting": {"es6": true, "minified": true, "urlCheck": true},
+  "packOptions": {"ignore": []}
+}

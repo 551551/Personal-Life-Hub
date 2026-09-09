@@ -1,0 +1,26 @@
+import { expect, test } from '@playwright/test'
+
+test('diet entries group by meal and update daily nutrition totals', async ({ page }) => {
+  await page.goto('/#/diet/2026-09-03')
+  await page.getByLabel('食物名称').fill('燕麦')
+  await page.getByLabel('食物数量').fill('50')
+  await page.getByLabel('热量').fill('190')
+  await page.getByLabel('蛋白质').fill('6')
+  await page.getByLabel('碳水').fill('34')
+  await page.getByLabel('脂肪').fill('3')
+  await page.getByRole('button', { name: '添加饮食' }).click()
+  await expect(page.getByLabel('编辑食物：燕麦')).toBeVisible()
+  await expect(page.locator('.nutrition-grid > div').first()).toContainText('190')
+
+  await page.reload()
+  await expect(page.getByLabel('编辑食物：燕麦')).toHaveValue('燕麦')
+  await page.getByLabel('燕麦 热量').fill('200')
+  await page.getByLabel('燕麦 热量').blur()
+  await expect(page.locator('.nutrition-grid > div').first()).toContainText('200')
+  await page.getByText('编辑详细营养').click()
+  await page.getByLabel('燕麦 蛋白质').fill('8')
+  await page.getByLabel('燕麦 蛋白质').blur()
+  await expect(page.locator('.nutrition-grid > div').nth(1)).toContainText('8')
+  await page.getByRole('button', { name: '删除食物：燕麦' }).click()
+  await expect(page.locator('.nutrition-grid > div').first()).toContainText('0')
+})

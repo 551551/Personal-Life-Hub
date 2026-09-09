@@ -1,0 +1,5 @@
+.field { margin-bottom: 24rpx; }
+.field label { display: block; margin-bottom: 8rpx; }
+.field input, .field textarea, .choice { box-sizing: border-box; width: 100%; min-height: 88rpx; padding: 16rpx; background: #f3f6f8; border-radius: 8rpx; }
+.field textarea { height: 200rpx; }
+.details { white-space: pre-wrap; word-break: break-all; font-size: 28rpx; }

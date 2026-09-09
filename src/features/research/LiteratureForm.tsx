@@ -1,0 +1,8 @@
+import { useState, type FormEvent } from 'react'
+import type { LiteratureItem } from '../../types/domain'
+type Input = Omit<LiteratureItem, 'id' | 'createdAt' | 'updatedAt'>
+export function LiteratureForm({ projectId, onSubmit }: { projectId: string; onSubmit(input: Input): Promise<unknown> }) {
+  const [title, setTitle] = useState(''); const [authors, setAuthors] = useState(''); const [year, setYear] = useState(''); const [plannedDate, setDate] = useState(''); const [notes, setNotes] = useState('')
+  async function submit(event: FormEvent) { event.preventDefault(); await onSubmit({ projectId, title, authors: authors || undefined, year: year ? Number(year) : undefined, status: 'to-read', plannedDate: plannedDate || undefined, priority: 'medium', notes: notes || undefined }); setTitle(''); setAuthors(''); setYear(''); setDate(''); setNotes('') }
+  return <form className="domain-form" onSubmit={submit}><label>文献标题<input aria-label="文献标题" onChange={(e) => setTitle(e.target.value)} required value={title} /></label><label>作者<input aria-label="文献作者" onChange={(e) => setAuthors(e.target.value)} value={authors} /></label><label>年份<input aria-label="文献年份" max="9999" min="1000" onChange={(e) => setYear(e.target.value)} type="number" value={year} /></label><label>计划阅读<input aria-label="计划阅读日期" onChange={(e) => setDate(e.target.value)} type="date" value={plannedDate} /></label><label className="domain-form__wide">阅读笔记<textarea aria-label="阅读笔记" onChange={(e) => setNotes(e.target.value)} rows={2} value={notes} /></label><button className="primary-button" type="submit">添加文献</button></form>
+}

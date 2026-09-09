@@ -1,0 +1,8 @@
+.field { margin-bottom: 24rpx; }
+.field label { display: block; margin-bottom: 8rpx; }
+.field input, .field textarea, .choice { box-sizing: border-box; width: 100%; min-height: 88rpx; padding: 16rpx; background: #f3f6f8; border-radius: 8rpx; }
+.field textarea { height: 180rpx; }
+.project-title { font-size: 34rpx; font-weight: 600; word-break: break-all; }
+.description { white-space: pre-wrap; word-break: break-all; margin: 16rpx 0; }
+.milestone { border-top: 1rpx solid var(--border); padding: 24rpx 0; }
+.selected { border-color: var(--primary); }

@@ -1,0 +1,2 @@
+import { createTypes, type CreateType } from './createRegistry'
+export function CreateTypePicker({ onSelect }: { onSelect(type: CreateType): void }) { return <div className="create-type-grid">{createTypes.map(({ key, label, description, icon: Icon }) => <button aria-label={label} key={key} onClick={() => onSelect(key)} type="button"><Icon aria-hidden="true" /><span><strong>{label}</strong><small>{description}</small></span></button>)}</div> }

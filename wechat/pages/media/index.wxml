@@ -1,0 +1,37 @@
+<view class="page">
+  <view class="heading">自媒体工作台</view>
+  <view class="subtitle">从灵感、制作到发布与复盘</view>
+  <view class="summary"><text>全部 {{total}}</text><text>制作中 {{producing}}</text><text>已发布 {{published}}</text></view>
+  <view class="panel">
+    <view class="label">{{editingId ? '编辑内容' : '新建内容'}}</view>
+    <view class="field"><label for="media-title">标题 *</label><input id="media-title" value="{{draft.title}}" data-field="title" bindinput="onField" maxlength="200" disabled="{{busy}}" placeholder="这次想分享什么？" /></view>
+    <view class="field"><label for="media-type">内容类型 *</label><input id="media-type" value="{{draft.contentType}}" data-field="contentType" bindinput="onField" maxlength="60" disabled="{{busy}}" placeholder="视频、文章、图文……" /></view>
+    <view class="field"><label for="media-platforms">发布平台（用逗号分隔）</label><input id="media-platforms" value="{{draft.platforms}}" data-field="platforms" bindinput="onField" maxlength="1200" disabled="{{busy}}" placeholder="视频号，B站" /></view>
+    <view class="field"><view>制作阶段</view><picker range="{{stages}}" value="{{stage}}" bindchange="onStage" disabled="{{busy}}"><view class="choice">{{stages[stage]}} · 点击选择</view></picker></view>
+    <view class="field"><label for="planned">计划发布日期（选填）</label><input id="planned" value="{{draft.plannedPublishDate}}" data-field="plannedPublishDate" bindinput="onField" maxlength="10" disabled="{{busy}}" placeholder="YYYY-MM-DD" /></view>
+    <view class="field"><label for="actual">实际发布日期（选填）</label><input id="actual" value="{{draft.actualPublishDate}}" data-field="actualPublishDate" bindinput="onField" maxlength="10" disabled="{{busy}}" placeholder="YYYY-MM-DD" /></view>
+    <view class="field"><label for="materials">素材与制作备注</label><textarea id="materials" value="{{draft.materialNotes}}" data-field="materialNotes" bindinput="onField" maxlength="20000" disabled="{{busy}}" /></view>
+    <view class="label">发布指标</view>
+    <view class="metrics">
+      <view class="field"><label for="views">阅读 / 播放</label><input id="views" type="number" value="{{draft.views}}" data-field="views" bindinput="onField" disabled="{{busy}}" /></view>
+      <view class="field"><label for="likes">点赞</label><input id="likes" type="number" value="{{draft.likes}}" data-field="likes" bindinput="onField" disabled="{{busy}}" /></view>
+      <view class="field"><label for="comments">评论</label><input id="comments" type="number" value="{{draft.comments}}" data-field="comments" bindinput="onField" disabled="{{busy}}" /></view>
+      <view class="field"><label for="other">其他指标</label><input id="other" type="number" value="{{draft.other}}" data-field="other" bindinput="onField" disabled="{{busy}}" /></view>
+    </view>
+    <view class="field"><label for="retro">复盘记录</label><textarea id="retro" value="{{draft.retrospective}}" data-field="retrospective" bindinput="onField" maxlength="20000" disabled="{{busy}}" placeholder="哪些内容有效？下次如何改进？" /></view>
+    <view class="error" wx:if="{{error}}">{{error}}</view><view class="notice" wx:if="{{notice}}">{{notice}}</view>
+    <view class="actions"><button class="primary" bindtap="onSave" loading="{{busy}}" disabled="{{busy}}">保存内容</button><button wx:if="{{editingId}}" bindtap="onCancel" disabled="{{busy}}">取消编辑</button></view>
+  </view>
+  <picker range="{{filters}}" value="{{filter}}" bindchange="onFilter"><view class="panel">{{filters[filter]}} · {{filtered}} 条 · 点击筛选</view></picker>
+  <view class="panel muted" wx:if="{{!filtered}}">当前阶段还没有内容。记录一个灵感，开始新的创作。</view>
+  <view class="panel" wx:for="{{items}}" wx:key="id">
+    <view class="badge">{{item.stageLabel}} · {{item.contentType}}</view><view class="record-title">{{item.title}}</view>
+    <view class="muted">{{item.platformText || '尚未选择平台'}}</view>
+    <view>计划：{{item.plannedPublishDate || '未安排'}} · 实际：{{item.actualPublishDate || '未记录'}}</view>
+    <view class="muted">阅读 {{item.metrics.views}} · 赞 {{item.metrics.likes}} · 评论 {{item.metrics.comments}} · 其他 {{item.metrics.other || 0}}</view>
+    <view class="record-details" wx:if="{{item.materialNotes}}">素材：{{item.materialNotes}}</view><view class="record-details" wx:if="{{item.retrospective}}">复盘：{{item.retrospective}}</view>
+    <view class="actions"><button bindtap="onEdit" data-id="{{item.id}}" disabled="{{busy}}">编辑</button><button class="danger" bindtap="onDelete" data-id="{{item.id}}" disabled="{{busy}}">删除</button></view>
+  </view>
+  <button wx:if="{{filtered > items.length}}" bindtap="onMore">加载更多</button>
+  <view class="muted">数据仅保存在当前设备，不会自动同步。</view>
+</view>

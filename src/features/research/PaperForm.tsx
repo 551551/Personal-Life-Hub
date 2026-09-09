@@ -1,0 +1,4 @@
+import { useState, type FormEvent } from 'react'
+import type { Paper } from '../../types/domain'
+type Input = Omit<Paper, 'id' | 'createdAt' | 'updatedAt'>
+export function PaperForm({ projectId, onSubmit }: { projectId: string; onSubmit(input: Input): Promise<unknown> }) { const [title, setTitle] = useState(''); const [deadline, setDeadline] = useState(''); async function submit(e: FormEvent) { e.preventDefault(); await onSubmit({ projectId, title, deadline: deadline || undefined, status: 'drafting', progress: 0 }); setTitle(''); setDeadline('') }; return <form className="inline-create" onSubmit={submit}><input aria-label="论文标题" onChange={(e) => setTitle(e.target.value)} placeholder="论文标题" required value={title} /><input aria-label="论文截止日期" onChange={(e) => setDeadline(e.target.value)} type="date" value={deadline} /><button className="primary-button" type="submit">添加论文</button></form> }

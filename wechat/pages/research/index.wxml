@@ -1,0 +1,40 @@
+<view class="page">
+  <view class="heading">科研项目</view><view class="subtitle">管理项目进度与关键节点 · 共 {{total}} 个项目</view>
+  <view class="panel"><navigator url="/pages/records/index?type=literatureItems">文献阅读 →</navigator><navigator url="/pages/records/index?type=experiments">实验记录 →</navigator><navigator url="/pages/records/index?type=papers">论文与章节 →</navigator></view>
+  <view wx:if="{{error}}" class="error">{{error}}</view><view wx:if="{{notice}}" class="notice">{{notice}}</view>
+  <view class="panel">
+    <view class="label">{{projectId ? '编辑项目' : '创建项目'}}</view>
+    <view class="field"><label for="name">项目名称 *</label><input id="name" value="{{project.name}}" data-group="project" data-field="name" bindinput="onField" maxlength="200" disabled="{{busy}}" /></view>
+    <view class="field"><label for="description">项目说明</label><textarea id="description" value="{{project.description}}" data-group="project" data-field="description" bindinput="onField" maxlength="20000" disabled="{{busy}}" /></view>
+    <view class="field"><label for="stage">当前阶段</label><input id="stage" value="{{project.stage}}" data-group="project" data-field="stage" bindinput="onField" maxlength="100" disabled="{{busy}}" placeholder="例如：实验设计、分析数据" /></view>
+    <view class="field"><label for="start">开始日期 *</label><input id="start" value="{{project.startDate}}" data-group="project" data-field="startDate" bindinput="onField" maxlength="10" disabled="{{busy}}" placeholder="YYYY-MM-DD" /></view>
+    <view class="field"><label for="deadline">截止日期（选填）</label><input id="deadline" value="{{project.deadline}}" data-group="project" data-field="deadline" bindinput="onField" maxlength="10" disabled="{{busy}}" placeholder="YYYY-MM-DD" /></view>
+    <view class="field"><label for="progress">完成进度（0～100）</label><input id="progress" type="digit" value="{{project.progress}}" data-group="project" data-field="progress" bindinput="onField" disabled="{{busy}}" /></view>
+    <view class="field"><view>项目状态</view><picker range="{{statuses}}" value="{{status}}" bindchange="onStatus" disabled="{{busy}}"><view class="choice">{{statuses[status]}} · 点击选择</view></picker></view>
+    <view class="actions"><button class="primary" bindtap="onSaveProject" disabled="{{busy}}" loading="{{busy}}">保存项目</button><button wx:if="{{projectId}}" bindtap="onCancelProject" disabled="{{busy}}">取消编辑</button></view>
+  </view>
+  <view wx:if="{{!total}}" class="panel muted">创建第一个项目，再添加关键里程碑。</view>
+  <view wx:for="{{projects}}" wx:key="id" class="panel {{selectedId === item.id ? 'selected' : ''}}">
+    <view class="project-title">{{item.name}}</view><view>{{item.statusLabel}} · {{item.stage || '阶段未填写'}} · {{item.progress}}%</view>
+    <progress percent="{{item.progress}}" activeColor="#0f766e" />
+    <view class="muted">{{item.startDate}} 开始 · 截止 {{item.deadline || '未安排'}}</view>
+    <view class="description" wx:if="{{item.description}}">{{item.description}}</view>
+    <view class="actions"><button bindtap="onSelect" data-id="{{item.id}}" disabled="{{busy}}">里程碑</button><button bindtap="onEditProject" data-id="{{item.id}}" disabled="{{busy}}">编辑</button><button class="danger" bindtap="onDeleteProject" data-id="{{item.id}}" disabled="{{busy}}">删除</button></view>
+  </view>
+  <view class="panel" wx:if="{{selectedId}}">
+    <view class="project-title">{{selectedName}} · 里程碑</view>
+    <view class="label">{{milestoneId ? '编辑里程碑' : '新增里程碑'}}</view>
+    <view class="field"><label for="milestone-title">关键成果 *</label><input id="milestone-title" value="{{milestone.title}}" data-group="milestone" data-field="title" bindinput="onField" maxlength="200" disabled="{{busy}}" /></view>
+    <view class="field"><label for="milestone-date">计划日期 *</label><input id="milestone-date" value="{{milestone.date}}" data-group="milestone" data-field="date" bindinput="onField" maxlength="10" disabled="{{busy}}" placeholder="YYYY-MM-DD" /></view>
+    <view class="field"><view>优先级</view><picker range="{{priorities}}" value="{{priority}}" bindchange="onPriority" disabled="{{busy}}"><view class="choice">{{priorities[priority]}} · 点击选择</view></picker></view>
+    <label><switch checked="{{completed}}" bindchange="onCompleted" disabled="{{busy}}" color="#0f766e" /> 已完成</label>
+    <view class="actions"><button class="primary" bindtap="onSaveMilestone" disabled="{{busy}}">保存里程碑</button><button wx:if="{{milestoneId}}" bindtap="onCancelMilestone" disabled="{{busy}}">取消</button></view>
+    <view wx:if="{{!milestones.length}}" class="muted">还没有里程碑。</view>
+    <view class="milestone" wx:for="{{milestones}}" wx:key="id">
+      <view>{{item.title}}</view><view class="muted">{{item.date}} · {{item.status === 'completed' ? '已完成' : '待完成'}} · {{item.priority === 'high' ? '高优先级' : item.priority === 'low' ? '低优先级' : '中优先级'}}</view>
+      <view class="actions"><button bindtap="onEditMilestone" data-id="{{item.id}}" disabled="{{busy}}">编辑</button><button class="danger" bindtap="onDeleteMilestone" data-id="{{item.id}}" disabled="{{busy}}">删除</button></view>
+    </view>
+  </view>
+  <button bindtap="onMore">加载更多项目 / 里程碑</button>
+  <view class="muted">数据仅保存在当前设备，请定期导出备份。</view>
+</view>

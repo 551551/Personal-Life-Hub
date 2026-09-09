@@ -1,0 +1,19 @@
+<view class="page">
+  <view class="heading">{{title}}</view><view class="subtitle">{{description}}</view>
+  <navigator wx:for="{{children}}" wx:key="table" class="panel" url="/pages/records/index?type={{item.table}}">{{item.title}} →</navigator>
+  <view class="panel">
+    <view class="label">{{editingId ? '编辑记录' : '新增记录'}}</view>
+    <view class="field" wx:for="{{fields}}" wx:key="key">
+      <label for="field-{{item.key}}">{{item.label}}{{item.optional ? '（选填）' : ' *'}}</label>
+      <picker wx:if="{{item.kind === 'choice' || item.kind === 'parent'}}" range="{{item.labels}}" value="{{item.index}}" data-key="{{item.key}}" bindchange="onChoice" disabled="{{busy}}"><view class="choice">{{item.labels[item.index]}} · 点击选择</view></picker>
+      <textarea wx:elif="{{item.kind === 'note'}}" id="field-{{item.key}}" value="{{item.value}}" data-key="{{item.key}}" bindinput="onField" maxlength="20000" disabled="{{busy}}" />
+      <input wx:else id="field-{{item.key}}" type="{{item.kind === 'number' ? 'digit' : 'text'}}" value="{{item.value}}" data-key="{{item.key}}" bindinput="onField" maxlength="2000" disabled="{{busy}}" placeholder="{{item.kind === 'date' ? 'YYYY-MM-DD' : item.label}}" />
+    </view>
+    <view class="error" wx:if="{{error}}">{{error}}</view><view class="notice" wx:if="{{notice}}">{{notice}}</view>
+    <view class="actions"><button class="primary" bindtap="onSave" disabled="{{busy || !fields.length}}" loading="{{busy}}">保存记录</button><button bindtap="onCancel" disabled="{{busy}}">{{editingId ? '取消编辑' : '重置表单'}}</button></view>
+  </view>
+  <view class="panel" wx:if="{{type === 'dietEntries'}}"><picker mode="date" value="{{day}}" bindchange="onDay"><view>查看日期：{{day}} · 点击更换</view></picker><view>{{summary}}</view></view>
+  <view class="label">记录 · {{total}} 条</view><view class="panel muted" wx:if="{{!total}}">暂无记录。请填写上方表单保存第一条。</view>
+  <view class="panel" wx:for="{{items}}" wx:key="id"><view class="label">{{item.title}}</view><text class="details" selectable>{{item.detail}}</text><view class="actions"><button data-id="{{item.id}}" bindtap="onEdit" disabled="{{busy}}">编辑</button><button class="danger" data-id="{{item.id}}" bindtap="onDelete" disabled="{{busy}}">删除</button></view></view>
+  <button wx:if="{{total > items.length}}" bindtap="onMore">加载更多</button><view class="footnote">记录仅保存在当前设备，请定期在数据与设置中导出备份。</view>
+</view>

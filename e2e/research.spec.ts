@@ -1,0 +1,57 @@
+import { expect, test } from '@playwright/test'
+
+test('research project connects milestones, literature, experiments and paper work to today', async ({ page }) => {
+  await page.goto('/#/research')
+  await page.getByLabel('项目名称').fill('光电探测研究')
+  await page.getByLabel('项目开始日期').fill('2026-09-01')
+  await page.getByLabel('项目截止日期').fill('2026-12-31')
+  await page.getByRole('button', { name: '创建项目' }).click()
+  await expect(page.getByRole('heading', { name: '光电探测研究' })).toBeVisible()
+
+  await page.getByLabel('里程碑标题').fill('完成方案评审')
+  await page.getByLabel('里程碑日期').fill('2026-09-02')
+  await page.getByRole('button', { name: '添加里程碑' }).click()
+  await expect(page.getByLabel('编辑里程碑标题：完成方案评审')).toHaveValue(
+    '完成方案评审',
+  )
+
+  await page.getByRole('button', { name: '文献阅读' }).click()
+  await page.getByLabel('文献标题').fill('高灵敏探测综述')
+  await page.getByLabel('文献年份').fill('2024')
+  await page.getByLabel('计划阅读日期').fill('2026-09-02')
+  await page.getByRole('button', { name: '添加文献' }).click()
+  await expect(page.getByText('高灵敏探测综述')).toBeVisible()
+  await page.getByLabel('编辑文献标题：高灵敏探测综述').fill('高灵敏探测综述（修订）')
+  await page.getByLabel('编辑文献标题：高灵敏探测综述').blur()
+
+  await page.getByRole('button', { name: '实验进度' }).click()
+  await page.getByLabel('实验名称').fill('暗电流测试')
+  await page.getByLabel('实验计划日期').fill('2026-09-02')
+  await page.getByRole('button', { name: '添加实验' }).click()
+  await expect(page.getByRole('heading', { name: '暗电流测试' })).toBeVisible()
+  await page.getByLabel('编辑实验名称：暗电流测试').fill('暗电流复测')
+  await page.getByLabel('编辑实验名称：暗电流测试').blur()
+
+  await page.getByRole('button', { name: '论文写作' }).click()
+  await page.getByLabel('论文标题').fill('探测器论文')
+  await page.getByRole('button', { name: '添加论文' }).click()
+  await page.getByLabel('编辑论文标题：探测器论文').fill('探测器论文（修订）')
+  await page.getByLabel('编辑论文标题：探测器论文').blur()
+  await page.getByLabel('章节或修改任务标题').fill('引言')
+  await page.getByLabel('论文任务截止日期').fill('2026-09-02')
+  await page.getByRole('button', { name: '添加任务' }).click()
+  await expect(page.getByText('引言')).toBeVisible()
+  await page.getByLabel('编辑论文任务标题：引言').fill('引言修订')
+  await page.getByLabel('编辑论文任务标题：引言').blur()
+  await page.getByLabel('编辑论文任务备注：引言修订').fill('补充研究背景')
+  await page.getByLabel('编辑论文任务备注：引言修订').blur()
+
+  await page.getByRole('link', { name: '今日计划' }).click()
+  await expect(page).toHaveURL(/#\/today$/)
+  await page.getByLabel('选择日期').fill('2026-09-02')
+  await expect(page).toHaveURL(/#\/today\/2026-09-02$/)
+  await expect(page.getByText('里程碑：完成方案评审')).toBeVisible()
+  await expect(page.getByText('阅读：高灵敏探测综述（修订）')).toBeVisible()
+  await expect(page.getByText('实验：暗电流复测')).toBeVisible()
+  await expect(page.getByText('论文：引言修订')).toBeVisible()
+})
